@@ -1,40 +1,33 @@
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Create a key with RSA algorithm with 4096 rsa bits
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#   use data source to get all avalablility zones in region
-#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-data "aws_availability_zones" "available_zones" {}
-
-#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#  fetching AMI ID
-#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-data "aws_ami" "ubuntu-linux-1404" {
-  most_recent = true
-  owners      = ["099720109477"]
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+resource "tls_private_key" "private_key" {
+  algorithm = var.keypair_algorithm
+  rsa_bits  = var.rsa_bit
 }
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#  creating ec2 instances in public subnet
+#create a key pair using above private key
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-resource "aws_instance" "jenkins-master-node" {
-  ami           = data.aws_ami.ubuntu-linux-1404.id
-  instance_type = var.instance_type
-  //count           = 1
-  key_name        = var.keypair_name
-  subnet_id       = var.public_subnet_az_id
-  security_groups = [var.jenkins_master_security_group_id[0], var.jenkins_master_security_group_id[1]]
-  user_data       = data.template_file.user_data.rendered
-
-  tags = {
-    Name = "Controller-${var.project_name}"
-  }
+resource "aws_key_pair" "keypair" {
+  key_name   = var.keypair_name
+  public_key = tls_private_key.private_key.public_key_openssh
+  depends_on = [tls_private_key.private_key]
 }
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# saving the private key at the specific location
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+resource "local_file" "save-key" {
+  content = tls_private_key.private_key.private_key_pem
+  //path.module is the module that access current working directory
+  filename = "${path.module}/${var.keypair_name}.pem"
+  // changes the file permission to read-only mode
+  file_permission = "0400"
+  depends_on      = [tls_private_key.private_key]
+
+}
+

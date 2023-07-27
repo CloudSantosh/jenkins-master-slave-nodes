@@ -1,3 +1,3 @@
-output "jenkins-server-public-ip" {
-  value = aws_instance.jenkins-server.public_ip
+output "jenkins-slave-node-public-ip" {
+  value = aws_instance.jenkins-slave-node.public_ip
 }

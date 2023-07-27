@@ -1,14 +1,8 @@
-output "jenkins-server-public-ip" {
-  value = module.jenkins-server.jenkins-server-public-ip
+output "jenkins-master-node-public-ip" {
+  value = module.jenkins-master-node.jenkins-master-node-public-ip
 
 }
-/*
-output "sonarqube-server-public-ip" {
-  value = module.sonarqube-server.sonarqube-server-public-ip
 
-}
-*/
-output "docker-server-public-ip" {
-  value = module.docker-server.docker-server-public-ip
-
+output "jenkins-slave-node-public-ip" {
+  value = module.jenkins-slave-node.jenkins-slave-node-public-ip
 }

@@ -25,16 +25,16 @@ data "aws_ami" "ubuntu-linux-1404" {
 #  creating ec2 instances in public subnet
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-resource "aws_instance" "jenkins-server" {
+resource "aws_instance" "jenkins-slave-node" {
   ami           = data.aws_ami.ubuntu-linux-1404.id
   instance_type = var.instance_type
   //count           = 1
   key_name        = var.keypair_name
   subnet_id       = var.public_subnet_az_id
-  security_groups = [var.jenkins_server_security_group_id]
+  security_groups = [var.jenkins_slave_security_group_id]
   user_data       = data.template_file.user_data.rendered
 
   tags = {
-    Name = "Jenkins-Server-${var.project_name}"
+    Name = "Worker1-${var.project_name}"
   }
 }
