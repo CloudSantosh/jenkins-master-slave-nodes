@@ -94,15 +94,10 @@ terraform apply --auto-approve
 
 #!/bin/bash
 #################################
-
 # Author: Santosh
-
 # Date: 27th-July-2023
-
 # version 1
-
 # This code install jenkins and java in the ubuntu instances
-
 ##################################
 
 sudo apt update -y
@@ -119,10 +114,11 @@ sudo systemctl start jenkins
 
 ```
 
+(This script is on jenkins-master-node as data.sh and renders on master instance when terraform deploy via command.)
+
 #### Install java on slave node
 
 ```bash
-
 #!/bin/bash
 #################################
 # Author: Santosh
@@ -131,12 +127,12 @@ sudo systemctl start jenkins
 # This code install Java in the ubuntu instances defined as slave node
 ##################################
 
-
 sudo apt update -y
 sudo apt install openjdk-17-jre -y
 sudo apt-get update
-
 ```
+
+(This script is on jenkins-slave-node as data.sh and renders on slave instance when terraform deploy via command.)
 
 #### Create ssh keys on slave node
 
@@ -144,24 +140,19 @@ sudo apt-get update
 
 ```javascript
 //Create a key with RSA algorithm with 4096 rsa bits
-
 resource "tls_private_key" "private_key" {
   algorithm = var.keypair_algorithm
   rsa_bits  = var.rsa_bit
 }
 
-
 //create a key pair using above private key
-
 resource "aws_key_pair" "keypair" {
   key_name   = var.keypair_name
   public_key = tls_private_key.private_key.public_key_openssh
   depends_on = [tls_private_key.private_key]
 }
 
-
 //saving the private key at the specific location
-
 resource "local_file" "save-key" {
   content = tls_private_key.private_key.private_key_pem
   //path.module is the module that access current working directory
@@ -169,7 +160,6 @@ resource "local_file" "save-key" {
   // changes the file permission to read-only mode
   file_permission = "0400"
   depends_on      = [tls_private_key.private_key]
-
 }
 
 ```
