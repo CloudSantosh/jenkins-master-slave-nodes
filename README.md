@@ -40,7 +40,7 @@ provider "aws" {
 }
 ```
 
-The ‘credentials file’ will contain aws_access_key_id and aws_secret_access_key.
+The ‘credentials file’ will contain 'aws_access_key_id' and 'aws_secret_access_key'.
 
 - Keep SSH keys handy for server/slave machines.
 
