@@ -4,7 +4,7 @@ We will learn how to set up Devops tool Jenkins in master/slave mode. With the g
 
 ![Logo](images/master-slave-jenkins.png)
 
-## Jenkins Master is the primary Jenkins server and is responsible for the following tasks:
+### Jenkins Master is the primary Jenkins server and is responsible for the following tasks:
 
 - It distributes the builds among the numerous slaves for execution.
 - It organizes the build projects.
@@ -12,10 +12,18 @@ We will learn how to set up Devops tool Jenkins in master/slave mode. With the g
 - Master can also run build jobs directly if necessary but for security reason it is not used now-a-days.
 - It keeps track of the build outcomes and shows them.
 
-## Jenkins Slave runs on a remote machine. A slave is responsible for the following tasks:
+### Jenkins Slave runs on a remote machine. A slave is responsible for the following tasks:
 
 - Slaves can be operated on a number of different operating systems.
 - It responds to the Jenkins Master's demands.
 - Apart from the fact that Jenkins executes the build task on the next available save,
 - we can always arrange the project to run on a certain sort of slave computer.
 - It also completes construction operations that the Master has dispatched.
+
+# Deployment
+
+Here we first deplpoy Single master and single slave aws instances where master instance has jenkins and java installed and slave/worker/agent instance has java as well. To avoid issue of connectivity due to java between master instance and slave/worker/agent instance, it is better to install same java version between master and worker.
+
+## Terraform
+
+![Logo](images/project_outline.png)
