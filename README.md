@@ -70,26 +70,34 @@ This module contains terraform code to create slave node(worker/agent) with java
 
 This module contains terraform code to create master node as Jenkins server with jenkins and java.
 
-### In order to run the terraform code, use the following commands
+### Run the terraform code
 
-- terraform init
-- terraform validate
-- terraform apply --auto-approve
+To deploy master and slave aws instances, run terraform command under the directory **/dev** because all modules are invoked and deployed from this folder.
 
-**Run terraform command in the directory /dev because all modules are invoked and deployed from this folder.**
+```bash
+terraform init
+```
+
+```bash
+terraform validate
+```
+
+```bash
+terraform apply --auto-approve
+```
 
 ## Steps for jenkins master and slave configuration
 
-#### Install Java on master node
+- Install Java on master node
 
-#### Install Jenkins on master node
+- Install Jenkins on master node
 
-#### Install java on slave node
+- Install java on slave node
 
-#### Create a user and ssh keys on slave node
+- Create a user and ssh keys on slave node
 
-#### Copy keys on master node
+- Copy keys on master node
 
-#### Join slave node to master
+- Join slave node to master
 
-#### Test the setup
+- Test the setup
