@@ -88,16 +88,94 @@ terraform apply --auto-approve
 
 ## Steps for jenkins master and slave configuration
 
-- Install Java on master node
+#### Install Java and Jenkins on master node
 
-- Install Jenkins on master node
+```bash
 
-- Install java on slave node
+#!/bin/bash
+#################################
 
-- Create a user and ssh keys on slave node
+# Author: Santosh
 
-- Copy keys on master node
+# Date: 27th-July-2023
 
-- Join slave node to master
+# version 1
 
-- Test the setup
+# This code install jenkins and java in the ubuntu instances
+
+##################################
+
+sudo apt update -y
+sudo apt install openjdk-17-jre -y
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+ /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+ /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins -y
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+```
+
+#### Install java on slave node
+
+```bash
+
+#!/bin/bash
+#################################
+# Author: Santosh
+# Date: 27th-July-2023
+# version 1
+# This code install Java in the ubuntu instances defined as slave node
+##################################
+
+
+sudo apt update -y
+sudo apt install openjdk-17-jre -y
+sudo apt-get update
+
+```
+
+#### Create ssh keys on slave node
+
+(Here ssh keypair is created of both master instance and slave instances but for Jenkins master slave configuration the slave keypair is saved as global credentials on master jenkins servers.)
+
+```javascript
+//Create a key with RSA algorithm with 4096 rsa bits
+
+resource "tls_private_key" "private_key" {
+  algorithm = var.keypair_algorithm
+  rsa_bits  = var.rsa_bit
+}
+
+
+//create a key pair using above private key
+
+resource "aws_key_pair" "keypair" {
+  key_name   = var.keypair_name
+  public_key = tls_private_key.private_key.public_key_openssh
+  depends_on = [tls_private_key.private_key]
+}
+
+
+//saving the private key at the specific location
+
+resource "local_file" "save-key" {
+  content = tls_private_key.private_key.private_key_pem
+  //path.module is the module that access current working directory
+  filename = "${path.module}/${var.keypair_name}.pem"
+  // changes the file permission to read-only mode
+  file_permission = "0400"
+  depends_on      = [tls_private_key.private_key]
+
+}
+
+```
+
+#### Copy keys on master node
+
+#### Join slave node to master
+
+#### Test the setup
