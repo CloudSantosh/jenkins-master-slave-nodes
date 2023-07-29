@@ -22,8 +22,44 @@ We will learn how to set up Devops tool Jenkins in master/slave mode. With the g
 
 # Deployment
 
-Here we first deplpoy Single master and single slave aws instances where master instance has jenkins and java installed and slave/worker/agent instance has java as well. To avoid issue of connectivity due to java between master instance and slave/worker/agent instance, it is better to install same java version between master and worker.
+Here we first deploy Single master and single slave aws instances where master instance has jenkins and java installed and slave/worker/agent instance has java as well. To avoid issue of connectivity due to java version compatibility of Jenkins master and Jenkins slave/worker/agent instance;
+
+- Use same java version for both jenkins master and slave/worker/agent
 
 ## Terraform
 
 ![Logo](images/project_outline.png)
+For simplicity purpose, we will be using Linux machine for creating Jenkins Master and Linux Slave. It’s now time to start using terraform for creating the machines.
+
+### Prerequisite:
+
+- Please make sure you create a provider.tf file
+
+```
+provider "aws" {
+  region                  = var.region
+  shared_credentials_file = "~/.aws/credentials"
+  profile                 = "default"
+}
+```
+
+The ‘credentials file’ will contain aws_access_key_id and aws_secret_access_key.
+
+- Keep SSH keys handy for server/slave machines. Here is a nice article [link](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-2) highlighting how to create it or else create them beforehand on AWS console and reference it in the code.
+  The module keypair contains terraform code to create ssh keypair on AWS console.
+- VPC
+  The module VPC creates virtual private cloud.
+- Security
+  The module contains terraform code to create instance level traffic inflow and outflow rules.
+- Jenkins-master-node
+  This module contains terraform code to create master node as Jenkins server.
+- Jenkins-slave-node
+  This module contains terraform code to create worker/agent/slave node for executing jobs assigned by master node machine.
+
+In order to run the terraform code, use the following commands
+
+- terraform init
+- terraform validate
+- terraform apply --auto-approve
+
+Note: run terraform command in the directory /dev because the all modules are called from this folder.
