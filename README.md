@@ -22,7 +22,7 @@ We will learn how to set up Devops tool Jenkins in master/slave mode. With the g
 
 # Deployment
 
-Here we first deploy Single master and single slave aws instances where master instance has jenkins and java installed and slave/worker/agent instance has java as well. To avoid issue of connectivity due to java version compatibility of Jenkins master and Jenkins slave/worker/agent instance;
+Here we first deploy single master and single slave aws instances where master instance has jenkins and java installed and slave/worker/agent instance has java as well. To avoid issue of connectivity due to java version compatibility of Jenkins master and Jenkins slave/worker/agent instance;
 
 - Use same java version for both jenkins master and slave/worker/agent
 
@@ -32,7 +32,7 @@ Here we first deploy Single master and single slave aws instances where master i
 
 For simplicity purpose, we will be using Linux machine for creating Jenkins Master and Linux Slave. It’s now time to start using terraform for creating the machines.
 
-### Prerequisite:
+### Pre-requisite:
 
 #### Please make sure you create a provider.tf file
 
@@ -65,9 +65,9 @@ This module contains terraform code to create master node as Jenkins server with
 
 #### Jenkins-slave-node
 
-This module contains terraform code to create worker/agent/slave node with java.
+This module contains terraform code to create slave node(worker/agent) with java.
 
-In order to run the terraform code, use the following commands
+### In order to run the terraform code, use the following commands
 
 - terraform init
 - terraform validate
@@ -77,16 +77,16 @@ Note: run terraform command in the directory /dev because all modules are deploy
 
 ## Steps for jenkins master and slave configuration
 
-### Install Java on master node
+#### Install Java on master node
 
-### Install Jenkins on master node
+#### Install Jenkins on master node
 
-### Install java on slave node
+#### Install java on slave node
 
-### Create a user and ssh keys on slave node
+#### Create a user and ssh keys on slave node
 
-### Copy keys on master node
+#### Copy keys on master node
 
-### Join slave node to master
+#### Join slave node to master
 
-### Test the setup
+#### Test the setup
