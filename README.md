@@ -130,13 +130,11 @@ sudo systemctl start jenkins
 sudo apt update -y
 sudo apt install openjdk-17-jre -y
 sudo apt-get update
-```
 
 (This script is on jenkins-slave-node as data.sh and renders on slave instance when terraform deploy via command.)
+```
 
 #### Create ssh keys on slave node
-
-(Here ssh keypair is created of both master instance and slave instances but for Jenkins master slave configuration the slave keypair is saved as global credentials on master jenkins servers.)
 
 ```javascript
 //Create a key with RSA algorithm with 4096 rsa bits
@@ -161,6 +159,8 @@ resource "local_file" "save-key" {
   file_permission = "0400"
   depends_on      = [tls_private_key.private_key]
 }
+
+(Here ssh keypair is created of both master instance and slave instances but for Jenkins master slave configuration the slave keypair is saved as global credentials on master jenkins servers.)
 
 ```
 
