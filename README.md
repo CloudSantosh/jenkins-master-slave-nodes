@@ -201,29 +201,28 @@ Final output:
 
 To join the Jenkins slave node to Jenkins Master, perform below steps -
 
-- Select Build Executor Status > New Node > Type - Permanent
-- Select below values -
-- Name - jenkins-slave1
-- Description - jenkins-slave1
-- Number of executors - 1
-- Remote root directory - /home/ubuntu/slave1
-- Labels - jenkins-slave1
-- Usage - Use this mode as much as possible
-- Launch method - Launch agents via SSH
-- Host - <public ip of slave node> e.g. 192.168.0.103
-- Credentials - Select the corresponding global credentials key of agents
-- Host Key Verification Strategy - manually trusted key verification strategy
+- Select Build Executor Status > **New Node** > **Type** - **Permanent**
+- Name : **jenkins-slave1**
+- Description : **jenkins-slave1**
+- Number of executors : **1**
+- Remote root directory : **/home/ubuntu/slave1**
+- Labels : **jenkins-slave1**
+- Usage : **Use this mode as much as possible**
+- Launch method : **Launch agents via SSH**
+- Host : **<public ip of slave node> e.g. 192.168.0.103**
+- Credentials : **Select the corresponding global credentials key of agents**
+- Host Key Verification Strategy : **manually trusted key verification strategy**
 - Save and check that new slave node is added and is in sync
 
 ![App Screenshot](images/nodes.png)
 
 #### Test the setup
 
-- Create "New item"
+- Create **New item**
 - Enter an item name as **Job1**
-- Choose freestyle project
-- Select Build as "Execute shell" and run echo command - "Testing Jenkins Master Slave Setup"
-- Save and run build - "Build Now" and Once the build is completed we can check the console output - "Building remotely jenkins-slave1" in works
+- Choose **freestyle project**
+- Select Build as **"Execute shell"** and run echo command - **"Testing Jenkins Master Slave Setup"**
+- Save and run build - **"Build Now"** and Once the build is completed we can check the console output and gets following output
 
 ![App Screenshot](images/execution.png)
 
@@ -232,9 +231,9 @@ Jenkins main controller should execute the job for security reasons therefore, i
 
 - Click at master node
 - Configure
-- No. of executors=0
-- labels= scrambled text i.e. fdkasjfkdsakfjdksaj
-- usage= only build with labels expressions matching this node.
-- save
+- No. of executors: **0**
+- Labels: **scrambled text i.e. fdkasjfkdsakfjdksaj**
+- Usage: **only build with labels expressions matching this node**
+- Save
 
 ![App Screenshot](images/master_node_as_controller.png)
