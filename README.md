@@ -88,6 +88,24 @@ terraform apply --auto-approve
 
 ## Steps for jenkins master and slave configuration
 
+#### Install java on slave node
+
+```bash
+#!/bin/bash
+#################################
+# Author: Santosh
+# Date: 27th-July-2023
+# version 1
+# This code install Java in the ubuntu instances defined as slave node
+##################################
+
+sudo apt update -y
+sudo apt install openjdk-17-jre -y
+sudo apt-get update
+```
+
+(This script is on jenkins-slave-node as data.sh and renders on slave instance when terraform deploy via command.)
+
 #### Install Java and Jenkins on master node
 
 ```bash
@@ -116,23 +134,22 @@ sudo systemctl start jenkins
 
 (This script is on jenkins-master-node as data.sh and renders on master instance when terraform deploy via command.)
 
-#### Install java on slave node
+##### Access URL http://<public IP of Jenkins server>:8080
+
+We wiil be asked to enter default admin password like below:
+![Logo](images/password.png)
+In order to access the default admin password we need to login to the jenkins server and run the command
 
 ```bash
-#!/bin/bash
-#################################
-# Author: Santosh
-# Date: 27th-July-2023
-# version 1
-# This code install Java in the ubuntu instances defined as slave node
-##################################
-
-sudo apt update -y
-sudo apt install openjdk-17-jre -y
-sudo apt-get update
+sudo cat /var/lib/jenkins/secrets/intialAdminPassword
 ```
 
-(This script is on jenkins-slave-node as data.sh and renders on slave instance when terraform deploy via command.)
+and copy & paste in the windows.
+
+On next screen you can see its asking to install the suggested plugins -
+![Logo](images/plugins_default.png)
+On the next screen you will be prompted to create jenkins user and finally we will get default Jenkins Dashboard:
+![Logo](images/jenkins_ready.png)
 
 #### Create ssh keys on slave node
 
@@ -166,6 +183,58 @@ resource "local_file" "save-key" {
 
 #### Copy keys on master node
 
+In Order to copy the keys on the master use following steps:
+
+- Dashboard
+- Manage Jenkins
+- Credentials
+- System
+- Global Credentials(Unrestricted)
+- Add credentials
+
+![Logo](images/credentials.png)
+
+Final output:
+![Logo](images/credentials_final.png)
+
 #### Join slave node to master
 
+To join the Jenkins slave node to Jenkins Master, perform below steps -
+
+- Select Build Executor Status > New Node > Type - Permanent
+- Select below values -
+- Name - jenkins-slave1
+- Description - jenkins-slave1
+- Number of executors - 1
+- Remote root directory - /home/ubuntu/slave1
+- Labels - jenkins-slave1
+- Usage - Use this mode as much as possible
+- Launch method - Launch agents via SSH
+- Host - <public ip of slave node> e.g. 192.168.0.103
+- Credentials - Select the corresponding global credentials key of agents
+- Host Key Verification Strategy - manually trusted key verification strategy
+- Save and check that new slave node is added and is in sync
+
+![Logo](images/nodes.png)
+
 #### Test the setup
+
+- Create "New item"
+- Enter an item name as **Job1**
+- Choose freestyle project
+- Select Build as "Execute shell" and run echo command - "Testing Jenkins Master Slave Setup"
+- Save and run build - "Build Now" and Once the build is completed we can check the console output - "Building remotely jenkins-slave1" in works
+
+![App Screenshot](images/execution.png)
+
+**Important Note:**
+Jenkins main controller should execute the job for security reasons therefore, it should pass the job to the corresponding slave nodes and it should be used as maintaining information of the job executed. Therefore, its executors should be set to zero.
+
+- Click at master node
+- Configure
+- No. of executors=0
+- labels= scrambled text i.e. fdkasjfkdsakfjdksaj
+- usage= only build with labels expressions matching this node.
+- save
+
+![App Screenshot](images/master_node_as_controller.png)
