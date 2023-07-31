@@ -134,7 +134,7 @@ sudo systemctl start jenkins
 
 (This script is on jenkins-master-node as data.sh and renders on master instance when terraform deploy via command.)
 
-##### Access URL http://<public IP of Jenkins server>:8080
+##### Access URL http://public IP of Jenkins server:8080
 
 We wiil be asked to enter default admin password like below:
 ![App Screenshot](images/password.png)
