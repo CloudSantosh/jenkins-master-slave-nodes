@@ -2,7 +2,7 @@
 
 We will learn how to set up Devops tool Jenkins in master/slave mode. With the growing popularity of Microservices, it is becoming necessary for any company to develop and launch several services at the same time. It's at this point that the CI tools must provide a way for sharing the load across several machines/servers. Jenkins also has the capability of distributing build jobs across a large number of systems, which is known as Jenkins distributed builds. We can set up a farm of build servers using Jenkins to distribute the burden or perform the build jobs in different settings. When we have a large project to build and the load has to be distributed across several machines on the network, distributed builds improve the efficiency of the build process. Jenkins implements the Master/Slave architecture to manage distributed builds.
 
-![Logo](images/master-slave-jenkins.png)
+![App Screenshot](images/master-slave-jenkins.png)
 
 ### Jenkins Master is the primary Jenkins server and is responsible for the following tasks:
 
@@ -46,7 +46,7 @@ The ‘credentials file’ will contain 'aws_access_key_id' and 'aws_secret_acce
 
 Here is a nice article [link](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-2) highlighting how to create it or else create them beforehand on AWS console and reference it in the code.
 
-![Logo](images/project_outline.png)
+![App Screenshot](images/project_outline.png)
 
 For simplicity purpose, we will be using Linux machine for creating Jenkins Master and Linux Slave. It’s now time to start using terraform for creating the machines.
 
@@ -137,7 +137,7 @@ sudo systemctl start jenkins
 ##### Access URL http://<public IP of Jenkins server>:8080
 
 We wiil be asked to enter default admin password like below:
-![Logo](images/password.png)
+![App Screenshot](images/password.png)
 In order to access the default admin password we need to login to the jenkins server and run the command
 
 ```bash
@@ -147,9 +147,9 @@ sudo cat /var/lib/jenkins/secrets/intialAdminPassword
 and copy & paste in the windows.
 
 On next screen you can see its asking to install the suggested plugins -
-![Logo](images/plugins_default.png)
+![App Screenshot](images/plugins_default.png)
 On the next screen you will be prompted to create jenkins user and finally we will get default Jenkins Dashboard:
-![Logo](images/jenkins_ready.png)
+![App Screenshot](images/jenkins_ready.png)
 
 #### Create ssh keys on slave node
 
@@ -192,10 +192,10 @@ In Order to copy the keys on the master use following steps:
 - Global Credentials(Unrestricted)
 - Add credentials
 
-![Logo](images/credentials.png)
+![App Screenshot](images/credentials.png)
 
 Final output:
-![Logo](images/credentials_final.png)
+![App Screenshot](images/credentials_final.png)
 
 #### Join slave node to master
 
@@ -215,7 +215,7 @@ To join the Jenkins slave node to Jenkins Master, perform below steps -
 - Host Key Verification Strategy - manually trusted key verification strategy
 - Save and check that new slave node is added and is in sync
 
-![Logo](images/nodes.png)
+![App Screenshot](images/nodes.png)
 
 #### Test the setup
 
