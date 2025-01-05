@@ -26,7 +26,7 @@ Here we first deploy single master and single slave aws instances where master i
 
 - Use same java version for both jenkins master and slave/worker/agent
 
-## Terraform
+## About Terraform
 
 ### Pre-requisite:
 
